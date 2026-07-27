@@ -1,0 +1,42 @@
+# Operating System / System files
+.DS_Store
+Thumbs.db
+
+# LaTeX build / auxiliary files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.toc
+*.lot
+*.lof
+*.out
+*.synctex.gz
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb
+*.dvi
+
+# Generated PDF output (optionnel, décommentez si vous ne voulez pas tracker les PDF compilés)
+# *.pdf
+
+# Python / Environment (si applicable)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env
+
+# IDE / Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Markdown files
+*.md
+

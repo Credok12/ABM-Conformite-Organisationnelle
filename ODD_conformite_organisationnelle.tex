@@ -1,0 +1,1409 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[a4paper,top=20mm,bottom=21mm,left=20mm,right=20mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[provide=*,french]{babel}
+\usepackage{newpxtext,newpxmath}
+\usepackage[scaled=0.92]{sourcesanspro}
+\usepackage[scaled=0.86]{inconsolata}
+\usepackage[table]{xcolor}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{bookmark}
+
+\definecolor{Navy}{HTML}{17324D}
+\definecolor{Teal}{HTML}{137C8B}
+\definecolor{Gold}{HTML}{D89B2B}
+\definecolor{Ice}{HTML}{EAF3F5}
+\definecolor{Mist}{HTML}{F4F6F8}
+\definecolor{Muted}{HTML}{65727E}
+\definecolor{Rule}{HTML}{CFD8DE}
+\definecolor{SoftGold}{HTML}{FFF6DF}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=Navy,
+  citecolor=Teal,
+  urlcolor=Teal,
+  pdftitle={Description du modèle ABM de conformité organisationnelle},
+  pdfauthor={Credo KANUMBEDI; Tresor KASEKA; Daniel KALALA},
+  pdfsubject={Description selon le protocole ODD et plan expérimental},
+  pdfkeywords={ABM, ODD, conformité, interactions, conflits, sanctions, Mesa, LLM, IEEE}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\sffamily\small\color{Muted}Modèle ABM — protocole ODD}
+\fancyhead[R]{\sffamily\small\color{Muted}Conformité organisationnelle}
+\fancyfoot[L]{\sffamily\footnotesize\color{Muted}Conformité organisationnelle}
+\fancyfoot[R]{\sffamily\footnotesize\color{Muted}Page \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}
+  {\sffamily\Large\bfseries\color{Navy}}
+  {\thesection}{0.6em}{}
+  [\vspace{0.2em}\color{Teal}\titlerule]
+\titleformat{\subsection}
+  {\sffamily\large\bfseries\color{Navy}}
+  {\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}
+  {\sffamily\normalsize\bfseries\color{Teal}}
+  {\thesubsubsection}{0.45em}{}
+\titlespacing*{\section}{0pt}{1.7ex plus 0.5ex}{0.9ex}
+\titlespacing*{\subsection}{0pt}{1.3ex plus 0.4ex}{0.55ex}
+\titlespacing*{\subsubsection}{0pt}{1.1ex plus 0.3ex}{0.35ex}
+
+\setlist[itemize]{leftmargin=1.4em,itemsep=0.15em,topsep=0.25em}
+\setlist[enumerate]{leftmargin=1.6em,itemsep=0.18em,topsep=0.25em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.38em}
+\renewcommand{\arraystretch}{1.12}
+\setcounter{tocdepth}{2}
+\captionsetup{font=small,labelfont={bf,sf,color=Navy},textfont={color=black}}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\ODD}{\textsc{odd}}
+
+\newtcolorbox{keybox}[1][]{
+  enhanced,breakable,colback=Ice,colframe=Teal,boxrule=0.7pt,arc=2mm,
+  left=3mm,right=3mm,top=1.7mm,bottom=1.7mm,
+  fonttitle=\sffamily\bfseries,coltitle=Navy,#1
+}
+\newtcolorbox{warningbox}[1][]{
+  enhanced,breakable,colback=SoftGold,colframe=Gold,boxrule=0.7pt,arc=2mm,
+  left=3mm,right=3mm,top=1.7mm,bottom=1.7mm,
+  fonttitle=\sffamily\bfseries,coltitle=Navy,#1
+}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[Mist] (current page.north west) rectangle (current page.south east);
+  \fill[Navy] (current page.north west)
+    rectangle ([yshift=-43mm]current page.north east);
+  \fill[Teal] ([yshift=-43mm]current page.north west)
+    rectangle ([yshift=-46mm]current page.north east);
+  \fill[Navy] ([yshift=22mm]current page.south west)
+    rectangle (current page.south east);
+  \draw[Rule,line width=0.8pt]
+    ([xshift=17mm,yshift=-58mm]current page.north west)
+    rectangle
+    ([xshift=-17mm,yshift=34mm]current page.south east);
+  \node[anchor=center,text=white,font=\sffamily\small\bfseries]
+    at ([yshift=-21mm]current page.north)
+    {\MakeUppercase{Document de modélisation scientifique}};
+  \node[anchor=center,text=white,font=\sffamily\footnotesize]
+    at ([yshift=11mm]current page.south)
+    {MODÈLE À BASE D’AGENTS \quad\textbullet\quad MESA ET MESA-LLM};
+\end{tikzpicture}
+
+\vspace*{52mm}
+\begin{center}
+{\sffamily\small\bfseries\color{Teal}
+\MakeUppercase{Modélisation à base d’agents}\par}
+
+\vspace{9mm}
+{\sffamily\fontsize{29}{34}\selectfont\bfseries\color{Navy}
+Description du modèle ABM\\[2mm]
+de conformité organisationnelle\par}
+
+\vspace{8mm}
+{\color{Gold}\rule{46mm}{1.2pt}\par}
+\vspace{6mm}
+{\sffamily\large\color{Muted}
+Présentation selon le protocole ODD\par}
+
+\vspace{24mm}
+{\sffamily\small\bfseries\color{Teal}\MakeUppercase{Présenté par}\par}
+\vspace{5mm}
+{\sffamily\large\bfseries\color{Navy}
+Credo KANUMBEDI\par}
+\vspace{2mm}
+{\sffamily\large\bfseries\color{Navy}
+Tresor KASEKA\par}
+\vspace{2mm}
+{\sffamily\large\bfseries\color{Navy}
+Daniel KALALA\par}
+
+\vspace{22mm}
+\begin{tcolorbox}[
+  width=0.78\textwidth,colback=white,colframe=Rule,boxrule=0.8pt,arc=1mm,
+  left=6mm,right=6mm,top=4mm,bottom=4mm]
+{\sffamily\small\bfseries\color{Navy}Objet du document}\par
+\vspace{1mm}
+\small
+Étude de la conformité organisationnelle selon trois environnements :
+absence de règles, règles seules, puis surveillance et sanctions.
+\end{tcolorbox}
+\end{center}
+
+\end{titlepage}
+
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\section*{Résumé}
+\addcontentsline{toc}{section}{Résumé}
+
+Nous construisons un modèle à base d’agents pour étudier la conformité dans une
+organisation. La population de référence comprend 90 employés et 10 chefs
+répartis dans dix services. Chaque agent possède une personnalité, une adhésion
+intrinsèque aux normes, une influençabilité, une sensibilité aux sanctions et
+une mémoire. Sa décision dépend de ses caractéristiques, du comportement de ses
+voisins, du chef, de la règle et du risque de sanction perçu.
+
+Nous comparons trois phases : absence de règles, règles sans sanctions, puis
+règles avec surveillance et sanctions graduées. Les actions sont choisies par
+le LLM de chaque agent, puis appliquées de manière synchrone. Les résultats
+collectifs ne sont pas fixés à l’avance : ils apparaissent à partir des
+décisions individuelles et des interactions répétées. La simulation de
+référence dure 200 périodes et chaque phase est répétée avec 30 graines.
+
+L’implémentation prévue utilise Mesa et Mesa-LLM. Chaque agent possède un
+contexte LLM isolé qui reçoit ses caractéristiques, ses observations locales
+et sa mémoire. Des dyades locales échangent des messages et peuvent entrer en
+conflit sans que celui-ci soit imposé. À chaque période, le LLM choisit le
+comportement conforme ou non conforme et fournit une justification structurée.
+Les équations construisent l’environnement perçu, actualisent la mémoire et les
+sanctions, puis mesurent les résultats ; la fonction logistique est conservée
+uniquement comme modèle témoin.
+
+\begin{keybox}[title=Question scientifique]
+Dans quelles conditions les différences individuelles, l’influence sociale,
+l’autorité et l’environnement institutionnel modifient-ils la conformité
+collective ?
+\end{keybox}
+
+\textbf{Mots-clés —} modèle à base d’agents, ODD, conformité, personnalité,
+influence sociale, hiérarchie, surveillance, sanctions, Mesa, modèle de
+langage.
+
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+
+\newpage
+\pagenumbering{arabic}
+
+\section{Overview — Vue d’ensemble}
+
+\subsection{Objectif}
+
+Le modèle sert à observer comment la conformité évolue sous l’effet combiné :
+
+\begin{itemize}
+  \item des différences individuelles ;
+  \item du comportement des collègues et des chefs ;
+  \item des interactions répétées et de la mémoire ;
+  \item des règles, de la surveillance et des sanctions.
+\end{itemize}
+
+Nous partons des décisions individuelles pour calculer les résultats collectifs.
+Nous ne supposons donc pas que la troisième phase produira nécessairement plus
+de conformité que les deux premières.
+
+\begin{warningbox}[title=Statut des valeurs numériques]
+La littérature justifie les mécanismes représentés. Elle ne fournit pas
+automatiquement leurs coefficients. Les valeurs numériques de ce document sont
+des choix expérimentaux soumis à l’analyse de sensibilité.
+\end{warningbox}
+
+\subsection{Entités, variables et échelles}
+
+\begin{table}[H]
+\centering
+\caption{Entités et variables principales}
+\begin{tabularx}{\textwidth}{@{}L{31mm}L{38mm}Y@{}}
+\toprule
+\rowcolor{Navy}
+\color{white}\textbf{Niveau} &
+\color{white}\textbf{Variables} &
+\color{white}\textbf{Description}\\
+\midrule
+Agent &
+$r_i,g_i,\mathcal N_i$ &
+Rôle, service et voisins directs.\\
+Personnalité &
+$O_i,C_i,E_i,A_i,N_i\in[0,1]$ &
+Cinq dimensions OCEAN continues.\\
+Dispositions &
+$I_i,K_i,S_i\in[0,1]$ &
+Influençabilité, adhésion intrinsèque et sensibilité aux sanctions.\\
+État dynamique &
+{\small $B_i,M_i,\widehat p_i,\rho_{ih},V_i$} &
+Comportement, mémoires, réputation du chef, risque perçu et violations.\\
+Service &
+$TC_g(t)$ &
+Un chef et neuf employés dans la référence.\\
+Organisation &
+$TC(t)$ &
+Population, régime institutionnel et résultats globaux.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Dans tout le document, $B_i(t)=1$ signifie que l’agent $i$ est conforme à la
+période $t$, tandis que $B_i(t)=0$ indique une non-conformité. Le symbole
+$\widehat p_i(t)$ désigne une probabilité estimée par l’agent et non une valeur
+qu’il connaît avec certitude. Enfin,
+\[
+c(x)=2x-1
+\]
+recentre une variable de $[0,1]$ vers $[-1,1]$ : $c(0)=-1$, $c(0{,}5)=0$ et
+$c(1)=1$. Ce recentrage est un choix technique qui permet d’exprimer un signal
+négatif, neutre ou positif. Il est utilisé dans les perceptions numériques et
+dans le modèle mathématique témoin.
+
+La configuration principale utilise :
+\[
+N=100,\qquad N_E=90,\qquad N_H=10,\qquad G=10,\qquad T=200.
+\]
+Une période représente un cycle d’observation, de décision et de réaction
+institutionnelle. Le modèle ne possède pas d’espace géographique ; l’espace est
+défini par le réseau social, les services et la hiérarchie.
+
+\subsection{Processus et ordre d’exécution}
+
+Les décisions de la période $t$ utilisent uniquement les informations de
+$t-1$. À chaque période :
+
+\begin{enumerate}
+  \item les dyades d’interaction encore actives sont conservées et les agents
+  libres sont appariés sur des liens locaux ;
+  \item les agents observent leurs voisins, leur chef le cas échéant, et les
+  messages reçus à la période précédente ;
+  \item la mémoire, l’influence sociale, la réputation du chef et le risque
+  perçu sont actualisés ;
+  \item un prompt individuel est construit à partir de ces seules informations
+  de la mémoire propre à l’agent et du partenaire assigné ;
+  \item chaque agent LLM retourne une action candidate, une justification
+  concise, des facteurs, un niveau de confiance et, s’il est apparié, un
+  message adressé à son partenaire ;
+  \item les réponses sont validées, puis tous les comportements candidats sont
+  appliqués simultanément ;
+  \item les messages sont livrés pour $t+1$, puis les conflits, violations et
+  sanctions sont calculés ;
+  \item les mémoires, les indicateurs et les traces sont enregistrés.
+\end{enumerate}
+
+Dans Mesa, le calcul des réponses et leur application sont deux étapes
+séparées. L’activation technique peut être parallèle, mais aucun agent ne voit
+une décision de la période $t$ avant que tous les agents aient terminé leur
+propre décision.
+
+\section{Design concepts — Concepts de conception}
+
+\subsection{Fondements utilisés}
+
+La description suit le protocole ODD \cite{grimm2020}. La démarche est
+générative : nous programmons l’environnement, les informations accessibles et
+les interactions, puis nous observons les actions choisies par les LLM et leurs
+résultats collectifs \cite{epstein1996}. Les références du tableau suivant
+justifient les mécanismes retenus ; elles ne déterminent ni la forme exacte des
+équations, ni leurs coefficients, ni les réponses du modèle de langage.
+
+\begin{table}[H]
+\centering
+\caption{Passage des références au modèle}
+\begin{tabularx}{\textwidth}{@{}L{34mm}L{42mm}Y@{}}
+\toprule
+\rowcolor{Navy}
+\color{white}\textbf{Fondement} &
+\color{white}\textbf{Mécanisme retenu} &
+\color{white}\textbf{Traduction dans le modèle}\\
+\midrule
+Big Five \cite{costa1992} &
+Personnalité multidimensionnelle &
+Cinq traits continus ; aucun comportement déterminé directement.\\
+Bandura \cite{bandura1977} &
+Apprentissage par observation &
+Comportements et conséquences observés dans le voisinage.\\
+Cialdini \cite{cialdini2009} &
+Preuve sociale et autorité &
+Majorité locale et poids supérieur du chef.\\
+Deutsch \cite{deutsch1973} &
+Conflit constructif ou destructif &
+Échanges directs, opposition observable et intensité évolutive.\\
+Simon \cite{simon1997} &
+Rationalité limitée &
+Décision fondée sur des informations locales.\\
+Ostrom \cite{ostrom1990} &
+Règles, surveillance et sanctions graduées &
+Trois mécanismes séparés dans le code.\\
+Axelrod \cite{axelrod2006} &
+Interactions répétées &
+Mémoire décroissante du comportement passé.\\
+Schelling \cite{schelling2006} &
+Passage micro--macro &
+Agrégation des décisions sans programmer le résultat global.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Les expressions mathématiques présentées plus loin sont donc des traductions
+du cadre théorique en règles calculables. Leur statut est indiqué dans le
+texte : fondement théorique, choix de modélisation ou valeur expérimentale.
+
+\subsection{Concepts appliqués}
+
+\begin{table}[H]
+\centering
+\caption{Concepts de conception}
+\begin{tabularx}{\textwidth}{@{}L{30mm}Y@{}}
+\toprule
+\rowcolor{Navy}
+\color{white}\textbf{Concept} &
+\color{white}\textbf{Application}\\
+\midrule
+Émergence &
+Conformité globale, normes locales, convergence, résistance et polarisation.\\
+Adaptation &
+Décision du LLM à partir des pairs, du chef, de sa réputation, de la mémoire et
+du risque perçu.\\
+Objectif individuel &
+Aucune optimisation parfaite ; action choisie et justifiée avec information
+limitée.\\
+Apprentissage &
+Mise à jour de $M_i(t)$, de $\widehat p_i(t)$ et de la mémoire narrative
+propre à l’agent.\\
+Prédiction &
+Anticipation du risque et du niveau de la prochaine sanction ; aucune
+prévision de l’état global.\\
+Perception &
+Voisins directs, comportement et réputation du chef pour les employés, règle
+et sanctions visibles ; aucun accès aux indicateurs globaux ni au risque réel.\\
+Interaction &
+Observation, messages directs entre voisins et influence hiérarchique.\\
+Stochasticité &
+Traits, réseau, appariement, réponse LLM et détection des violations.\\
+Collectifs &
+Services fixés au départ ; profils comportementaux identifiés après simulation.\\
+Observation &
+Actions, justifications déclarées, confiance, transitions, conformité,
+messages, conflits, détections et sanctions enregistrés aux trois niveaux.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Les profils tels que « conformiste social », « conformiste institutionnel » ou
+« non-conformiste persistant » ne sont pas attribués au départ. Ils sont
+identifiés à partir des trajectoires produites.
+
+\section{Details — Détails d’implémentation}
+
+\subsection{Initialisation}
+
+\subsubsection{Population et caractéristiques}
+
+La population contient dix services composés chacun d’un chef et de neuf
+employés. Les chefs et les employés utilisent les mêmes mécanismes de décision,
+de mémoire et d’adaptation. Ils sont tous soumis aux règles, à la surveillance
+et aux sanctions lorsqu’elles sont actives. Leur différence tient au rôle
+hiérarchique et aux relations qu’ils observent.
+
+Tant que nous ne disposons pas de données empiriques, les variables
+individuelles sont générées indépendamment :
+\[
+O_i,C_i,E_i,A_i,N_i,I_i,K_i,S_i\sim\operatorname{Beta}(2,2).
+\]
+Les cinq premières variables correspondent aux dimensions du Big Five
+\cite{costa1992}. La littérature justifie cette représentation
+multidimensionnelle, mais pas la loi $\operatorname{Beta}(2,2)$. Cette dernière
+est notre choix d’initialisation : elle produit davantage de valeurs proches de
+$0{,}5$ que de valeurs extrêmes. Les états dynamiques commencent avec :
+\[
+M_i(0)=0{,}5,\qquad V_i(0)=0,\qquad
+\widehat p_i(0)=
+\begin{cases}
+0,&\text{phases 1 et 2},\\
+0{,}5,&\text{phase 3}.
+\end{cases}
+\]
+L’état initial des chefs est contrôlé afin que les deux comportements soient
+présents dès le départ :
+\[
+\sum_{i:r_i=\mathrm{chef}} B_i(0)=5.
+\]
+Cinq chefs commencent donc avec un comportement conforme et cinq avec un
+comportement non conforme. Leur affectation aux dix services est tirée
+aléatoirement, puis conservée dans les trois phases d’une réplication.
+$B_i(0)$ représente un état antérieur à la simulation, et non une décision
+prise pendant celle-ci. Dès $t=1$, toutes les actions des chefs sont choisies
+et justifiées par leur LLM ; ils peuvent donc conserver ou modifier leur
+comportement.
+
+Pour les employés, $B_i(0)$ est produit par un prompt LLM neutre contenant
+uniquement le rôle, les traits et les dispositions. Cette réponse est elle
+aussi réutilisée dans les trois phases. Dans ce modèle, « comportement
+éthique » désigne seulement un comportement conforme à la norme étudiée et
+« comportement non éthique » un comportement non conforme. Ces expressions ne
+constituent pas des identités morales permanentes.
+
+\subsubsection{Réseau}
+
+Les employés sont reliés uniquement à d’autres employés :
+\[
+k_i^E\sim\mathcal U\{4,5,6,7,8\}.
+\]
+Un lien est recherché dans le même service avec une probabilité de $0{,}80$,
+sinon dans un autre service. Les chefs possèdent un réseau séparé :
+\[
+k_i^H\sim\mathcal U\{4,\ldots,\min(8,N_H-1)\}.
+\]
+La notation $\mathcal U\{a,\ldots,b\}$ désigne ici une loi uniforme discrète :
+chaque nombre entier de relations compris entre $a$ et $b$ possède la même
+probabilité d’être tiré. Ces plages sont des choix structurels du modèle.
+Les graphes sont non orientés, sans boucle ni doublon. L’algorithme apparie les
+agents qui ont encore des degrés libres ; s’il se bloque, il recommence, avec
+un maximum de 100 tentatives avant de retirer une nouvelle séquence de degrés.
+Le lien chef--employé est hiérarchique et séparé du réseau entre pairs.
+
+Les poids de référence sont $w_c=1$ pour un collègue et $w_h=2$ pour le chef.
+
+\subsection{Données d’entrée et environnement}
+
+Le prototype utilise Python 3.12.3, Mesa 3 et Mesa-LLM 0.3.2
+\cite{mesa2025,mesallm2026}. Mesa fournit le modèle, les agents, l’activation
+par étapes et la collecte des données. Mesa-LLM fournit la classe
+\code{LLMAgent} et le composant de raisonnement. Un même serveur de modèle de
+langage peut traiter les requêtes, mais chaque agent possède un identifiant, un
+prompt système et une mémoire isolés : aucune conversation n’est partagée entre
+agents.
+
+Mesa-LLM dépend de Mesa 3 et de Python 3.12 ou plus. Comme son interface évolue,
+la version exacte des paquets et leurs empreintes sont figées dans
+\code{requirements.lock}. Le fournisseur, l’identifiant exact du modèle, sa
+révision, l’URL du serveur et les paramètres d’inférence sont obligatoires dans
+\code{configuration.json}. Le modèle peut être local, notamment via Ollama, ou
+distant ; les résultats sont toujours interprétés comme conditionnels à cette
+configuration.
+
+Des flux pseudo-aléatoires distincts, dérivés de la graine de réplication, sont
+réservés à la construction des agents et du réseau ainsi qu’à la détection. Le
+LLM reçoit une graine si le fournisseur la prend en charge, mais cette option ne
+garantit pas à elle seule une réponse identique. Toutes les requêtes et
+réponses sont donc enregistrées et peuvent être rejouées sans nouvel appel.
+
+Le fichier \code{configuration.json} contient aussi les indicateurs
+\code{rules\_enabled}, \code{monitoring\_enabled} et
+\code{sanctions\_enabled}. Les états et les événements sont écrits dans
+\code{agents.csv}, \code{network.csv}, \code{timeseries.csv} et
+\code{events.csv}. Les échanges et les conflits sont enregistrés dans
+\code{interactions.csv} et \code{conflicts.csv}. Les décisions LLM sont
+conservées dans \code{llm\_decisions.jsonl} avec
+\code{prompt\_decision.txt}. Enfin,
+\code{run\_manifest.json} et \code{requirements.lock} décrivent la graine, les
+versions, l’empreinte du prompt, les paramètres du LLM et l’empreinte du code.
+Les clés d’accès ne sont jamais écrites dans les sorties.
+
+Aucune série temporelle externe n’est utilisée dans la première version. Des
+données organisationnelles pourront ensuite remplacer les distributions
+synthétiques, le réseau, la conformité initiale et les paramètres de détection.
+
+\subsection{Sous-modèles}
+
+\subsubsection{Personnalité}
+
+Les cinq dimensions sont conservées séparément conformément au Big Five
+\cite{costa1992}. Nous les combinons ensuite dans un score synthétique :
+\[
+P_i=
+\frac{\alpha_Oc(O_i)+\alpha_Cc(C_i)+\alpha_Ec(E_i)
++\alpha_Ac(A_i)+\alpha_Nc(N_i)}
+{\sum_q|\alpha_q|},
+\]
+avec, dans la référence,
+\[
+(\alpha_O,\alpha_C,\alpha_E,\alpha_A,\alpha_N)=(0,1,0,1,-1).
+\]
+Le numérateur additionne les contributions pondérées des traits. Dans la
+configuration de référence, la conscienciosité et l’agréabilité augmentent
+$P_i$, le neuroticisme le réduit, et l’ouverture ainsi que l’extraversion ont
+un poids nul. Le dénominateur normalise le résultat dans $[-1,1]$. Cette
+équation et les valeurs des $\alpha_q$ sont des choix de modélisation à tester,
+et non des coefficients proposés par Costa et McCrae. La personnalité ne
+détermine donc jamais directement le comportement.
+
+\subsubsection{Influence sociale et hiérarchie}
+
+L’apprentissage par observation et l’influence du groupe sont fondés sur
+Bandura \cite{bandura1977}, tandis que le poids particulier du chef traduit le
+principe d’autorité présenté par Cialdini \cite{cialdini2009}. La conformité
+observée parmi les pairs est d’abord :
+\[
+PS_i(t)=\frac{1}{|\mathcal N_i|}
+\sum_{j\in\mathcal N_i}B_j(t-1).
+\]
+Pour un employé, l’influence pondérée utilisée par le témoin mathématique est :
+\[
+SI_i(t)=
+\frac{\sum_{j\in\mathcal N_i}w_cB_j(t-1)+w_hB_{h(i)}(t-1)}
+{w_c|\mathcal N_i|+w_h},
+\]
+où $h(i)$ est son chef. Pour un chef, le terme hiérarchique est retiré et
+$\mathcal N_i$ contient ses pairs. Le témoin utilise
+$I_i\,c[SI_i(t)]$.
+
+Le numérateur compte les comportements conformes observés en donnant un poids
+$w_h$ au chef et un poids $w_c$ à chaque collègue ; le dénominateur est le poids
+total observé. Ainsi, $SI_i(t)=0$ signifie que personne n’est conforme dans le
+voisinage observé, et $SI_i(t)=1$ que tous le sont. Par exemple, avec cinq
+collègues dont quatre sont conformes et un chef non conforme,
+$SI_i(t)=4/(5+2)\simeq0{,}57$. La moyenne pondérée et les valeurs
+$w_c=1$, $w_h=2$ sont nos choix expérimentaux.
+
+Le LLM de l’employé ne reçoit pas une étiquette « chef éthique » ou « chef non
+éthique », ni les dispositions internes du chef. Il reçoit séparément le
+comportement observable $B_{h(i)}(t-1)$, la conformité des pairs $PS_i(t)$ et
+une réputation issue de l’historique observé :
+\[
+\rho_{ih}(0)=0{,}5,\qquad
+\rho_{ih}(t)=\lambda_\rho\rho_{ih}(t-1)
++(1-\lambda_\rho)B_{h(i)}(t-1),
+\quad \lambda_\rho=0{,}8.
+\]
+Une valeur de $\rho_{ih}(t)$ proche de 1 indique que le chef a été régulièrement
+conforme ; une valeur proche de 0 indique le contraire. Cette réputation décrit
+uniquement la conduite observée dans le modèle. La séparation entre
+$PS_i(t)$, $B_{h(i)}(t-1)$ et $\rho_{ih}(t)$ permet au LLM de distinguer la
+pression des collègues, l’exemple immédiat du chef et sa conduite passée.
+
+\subsubsection{Interactions directes et conflits}
+
+Les agents échangent aussi des messages directs. Cette interaction s’appuie
+sur l’idée qu’un conflit résulte d’actions ou de positions incompatibles et
+peut évoluer de manière constructive ou destructive \cite{deutsch1973}. Le
+graphe d’interaction contient les liens entre pairs, les liens chef--employé et
+les liens entre chefs. À chaque période, un appariement maximal aléatoire est
+construit parmi les agents libres. Un agent appartient à une seule dyade à la
+fois. La dyade reste active pendant deux périodes afin de permettre un message
+et une réponse, puis ses membres peuvent être appariés autrement.
+
+Le LLM reçoit l’identifiant, le rôle et le dernier comportement observable de
+son partenaire. Il produit un message de 40 mots au maximum et choisit une
+posture parmi : \emph{soutien}, \emph{persuasion}, \emph{opposition} ou
+\emph{avertissement}. Les deux messages sont calculés avant leur livraison :
+ils ne deviennent visibles qu’à $t+1$. Cette règle conserve l’activation
+synchrone et empêche un avantage lié à l’ordre de calcul.
+
+Un désaccord n’est pas automatiquement un conflit. Pour une dyade $(i,j)$,
+posons
+\[
+\mathcal A_{\mathrm{conf}}=\{\text{opposition},\text{avertissement}\}.
+\]
+L’événement de conflit est :
+\[
+X_{ij}(t)=
+\mathbf 1[B_i(t)\neq B_j(t)]\,
+\mathbf 1\!\left[
+s_{i\rightarrow j}(t)\in\mathcal A_{\mathrm{conf}}
+\ \lor\
+s_{j\rightarrow i}(t)\in\mathcal A_{\mathrm{conf}}
+\right],
+\]
+où $s_{i\rightarrow j}(t)$ désigne la posture du message envoyé par $i$ à
+$j$. L’intensité persistante du conflit est :
+\[
+CF_{ij}(t)=\lambda_{CF}CF_{ij}(t-1)
++(1-\lambda_{CF})X_{ij}(t),
+\quad CF_{ij}(0)=0,\quad \lambda_{CF}=0{,}6.
+\]
+Ainsi, une opposition répétée augmente $CF_{ij}$, tandis que l’absence de
+nouveau conflit le fait diminuer. Le message reçu, la réponse précédente et
+$CF_{ij}(t-1)$ entrent dans le prochain prompt des deux agents. Ni
+l’appariement ni le conflit ne modifient directement $B_i(t)$ : seul le LLM
+peut décider de maintenir ou de changer l’action.
+
+\subsubsection{Mémoire}
+
+Les interactions répétées et l’importance de l’expérience passée sont motivées
+par les travaux d’Axelrod \cite{axelrod2006}. Nous les traduisons par une
+mémoire exponentielle :
+\[
+M_i(t)=\lambda M_i(t-1)+(1-\lambda)B_i(t-1),
+\qquad \lambda=0{,}8\ \text{dans la référence}.
+\]
+La nouvelle mémoire conserve 80\,\% de sa valeur précédente et reçoit 20\,\%
+du dernier comportement. Une conformité récente la fait donc augmenter,
+tandis qu’une non-conformité la fait diminuer. Le mécanisme des interactions
+répétées est théorique ; la moyenne exponentielle et $\lambda=0{,}8$ sont nos
+choix de modélisation. Avec ce choix, les dix dernières périodes représentent
+environ $89{,}3\,\%$ du poids des observations. Aucun historique complet n’est
+conservé.
+
+\subsubsection{Règles, sanctions et risque perçu}
+
+\begin{table}[H]
+\centering
+\caption{Phases expérimentales}
+\begin{tabularx}{\textwidth}{@{}L{42mm}C{18mm}C{24mm}C{19mm}Y@{}}
+\toprule
+\rowcolor{Navy}
+\color{white}\textbf{Phase} &
+\color{white}\textbf{Règle} &
+\color{white}\textbf{Surveillance} &
+\color{white}\textbf{Sanction} &
+\color{white}\textbf{Risque réel}\\
+\midrule
+1 — Absence de règles & Non & Non & Non & $p_d=0$\\
+2 — Règles seules & Oui & Non & Non & $p_d=0$\\
+3 — Régime complet & Oui & Oui & Oui & $p_d=0{,}50$\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La séparation entre règle, surveillance et sanction, ainsi que le principe de
+sanctions graduées, s’appuient sur Ostrom \cite{ostrom1990}. Le tableau indique
+quels mécanismes sont actifs ; les probabilités et les niveaux numériques sont
+des paramètres expérimentaux.
+
+La règle perçue vaut $R_i(t)=0$ en phase 1 et $R_i(t)=1$ dans les phases 2 et
+3. Posons $Q_i(t)=1-B_i(t)$, où $Q_i(t)=1$ indique une violation. En phase 3 :
+\[
+D_i(t)=Q_i(t)\,Y_i(t),\qquad
+Y_i(t)\sim\operatorname{Bernoulli}(p_d),
+\]
+puis
+\[
+V_i(t)=V_i(t-1)+D_i(t).
+\]
+Dans les phases 1 et 2, $D_i(t)=0$ et $V_i(t)=V_i(t-1)$. Les sanctions sont
+graduées :
+\[
+L_i(t)=
+\begin{cases}
+0,&D_i(t)=0,\\
+0{,}25,&D_i(t)=1\ \text{et}\ V_i(t)=1,\\
+0{,}50,&D_i(t)=1\ \text{et}\ V_i(t)=2,\\
+1{,}00,&D_i(t)=1\ \text{et}\ V_i(t)\geq3.
+\end{cases}
+\]
+Un comportement conforme ou une violation non détectée ne modifie pas $V_i$
+et produit $L_i(t)=0$.
+
+Concrètement, $Y_i(t)$ représente le tirage de détection, $D_i(t)$ indique
+qu’une violation a effectivement été détectée, $V_i(t)$ compte ces détections
+depuis le début de l’exécution et $L_i(t)$ est la sanction appliquée pendant la
+période. La forme de ces équations traduit le mécanisme d’Ostrom ; les valeurs
+$0{,}25$, $0{,}50$ et $1{,}00$ ne viennent pas de cet auteur.
+
+Le risque perçu évolue avec l’expérience personnelle et les violations
+observées, conformément à l’idée que l’apprentissage peut provenir de
+l’expérience directe ou de l’observation des conséquences subies par autrui
+\cite{bandura1977} :
+\[
+X_i^{\mathrm{pers}}(t-1)=
+\begin{cases}
+1,&B_i(t-1)=0\ \text{et}\ D_i(t-1)=1,\\
+0,&B_i(t-1)=0\ \text{et}\ D_i(t-1)=0,\\
+\widehat p_i(t-1),&B_i(t-1)=1.
+\end{cases}
+\]
+Ainsi, une détection fournit un signal personnel positif, une violation non
+détectée un signal nul, et l’absence de violation ne fournit aucune nouvelle
+information. Ensuite :
+\[
+\widehat p_i(t)=
+0{,}4X_i^{\mathrm{pers}}(t-1)
++0{,}4X_i^{\mathrm{obs}}(t-1)
++0{,}2\widehat p_i(t-1).
+\]
+$X_i^{\mathrm{obs}}$ est la proportion de violations détectées parmi celles
+observées chez les voisins directs et, pour un employé, chez son chef. En
+l’absence d’observation, la valeur précédente est conservée.
+
+La mise à jour donne un poids de 40\,\% à l’expérience personnelle, 40\,\% aux
+événements observés et 20\,\% à la croyance précédente. Une valeur proche de 0
+signifie que l’agent perçoit peu de risque ; une valeur proche de 1 signifie
+qu’il le perçoit comme élevé. Les poids $(0{,}4;0{,}4;0{,}2)$ constituent une
+hypothèse de simulation.
+
+Le niveau attendu correspond à la prochaine violation détectée :
+\[
+\widehat L_i(t)=
+\begin{cases}
+0{,}25,&V_i(t-1)=0,\\
+0{,}50,&V_i(t-1)=1,\\
+1{,}00,&V_i(t-1)\geq2.
+\end{cases}
+\qquad
+SR_i(t)=S_i\widehat p_i(t)\widehat L_i(t).
+\]
+$\widehat L_i(t)$ est la sanction que l’agent anticipe lors de sa prochaine
+violation détectée. Le terme $SR_i(t)$ combine donc sa sensibilité personnelle
+$S_i$, son risque perçu $\widehat p_i(t)$ et la gravité attendue
+$\widehat L_i(t)$. Si l’un de ces trois éléments est nul, l’effet anticipé de
+la sanction est nul.
+
+\subsubsection{Décision et justification par le LLM}
+
+Le LLM constitue le mécanisme décisionnel de l’agent. La rationalité reste
+limitée, car le prompt ne contient que les informations accessibles à l’agent
+\cite{simon1997}. Nous définissons son observation structurée par :
+\[
+\begin{aligned}
+\Omega_i(t)=\{&
+r_i,O_i,C_i,E_i,A_i,N_i,I_i,K_i,S_i,\\
+&B_i(t-1),M_i(t),PS_i(t),R_i(t),
+\widehat p_i(t),\widehat L_i(t),V_i(t-1)\}
+\cup\mathcal O_i^H(t)\cup\mathcal D_i(t),
+\end{aligned}
+\]
+où
+\[
+\mathcal O_i^H(t)=
+\begin{cases}
+\{B_{h(i)}(t-1),\rho_{ih}(t)\},&r_i=\text{employé},\\
+\varnothing,&r_i=\text{chef}.
+\end{cases}
+\]
+\[
+\mathcal D_i(t)=
+\begin{cases}
+\{\eta_i(t),r_{\eta_i},B_{\eta_i}(t-1),
+\mathcal I_i(t),CF_{i\eta_i}(t-1)\},&i\text{ est apparié},\\
+\varnothing,&\text{sinon}.
+\end{cases}
+\]
+$\eta_i(t)$ est le partenaire assigné et $\mathcal I_i(t)$ le message reçu de
+ce partenaire. Le LLM ne peut choisir une autre cible.
+Le LLM ne reçoit ni $TC(t)$, ni le comportement des agents hors de son
+voisinage, ni le risque réel $p_d$, ni une information de la période future.
+Les valeurs numériques sont accompagnées de leur signification en langage
+simple afin que le LLM ne doive pas deviner la notation.
+
+Chaque agent possède aussi une mémoire narrative
+$\mathcal H_i^{\mathrm{LLM}}(t)$ contenant au maximum les dix derniers
+enregistrements : observation résumée, action, justification et conséquence
+visible. Cette mémoire est distincte de $M_i(t)$ : $M_i(t)$ est un résumé
+numérique du comportement passé, tandis que
+$\mathcal H_i^{\mathrm{LLM}}(t)$ fournit un contexte textuel au raisonnement.
+Elle n’inclut aucune information non observée par l’agent.
+
+À chaque période, Mesa-LLM appelle le serveur avec le même modèle de prompt et
+un contexte propre à l’agent \cite{mesallm2026} :
+\[
+\bigl(B_i(t),J_i(t),F_i(t),\kappa_i(t),
+m_{i\rightarrow\eta_i}(t),s_{i\rightarrow\eta_i}(t)\bigr)
+=
+\operatorname{LLM}_{\Theta}
+\!\left(\operatorname{Prompt}
+[\Omega_i(t),\mathcal H_i^{\mathrm{LLM}}(t)]\right).
+\]
+$J_i(t)$ est la justification déclarée, $F_i(t)$ la liste des facteurs,
+$\kappa_i(t)\in[0,1]$ la confiance, $m$ le message et $s$ sa posture. La sortie
+attendue est un objet JSON de la forme :
+
+\begin{tcolorbox}[
+  colback=Mist,colframe=Rule,boxrule=0.6pt,arc=1mm,
+  left=3mm,right=3mm,top=1.5mm,bottom=1.5mm]
+\ttfamily\small
+\{"action": "conforme" | "non\_conforme",\\
+\hspace*{4mm}"justification": "60 mots au maximum",\\
+\hspace*{4mm}"facteurs": ["personnalité", "pairs", "chef", "règle",
+"risque", "mémoire", "message", "conflit"],\\
+\hspace*{4mm}"confiance": 0.0 à 1.0,\\
+\hspace*{4mm}"interaction": \{"cible": "identifiant ou null",\\
+\hspace*{11mm}"type": "soutien | persuasion | opposition |
+avertissement | aucune",\\
+\hspace*{11mm}"message": "40 mots au maximum"\}\}
+\end{tcolorbox}
+
+L’action \code{conforme} devient $B_i(t)=1$ et
+\code{non\_conforme} devient $B_i(t)=0$. Le texte de justification n’est pas
+réinjecté comme une instruction à l’environnement ; il est conservé dans la
+mémoire propre à l’agent et dans les sorties. Nous demandons une justification
+concise, et non une chaîne de raisonnement interne.
+
+Lorsqu’un partenaire est assigné, la cible doit être $\eta_i(t)$ et le type
+\code{aucune} est interdit. Sans partenaire, la cible est nulle et le type vaut
+\code{aucune}. Une réponse qui ne respecte pas cette règle est invalide.
+
+La configuration de référence utilise une température nulle, un maximum de
+240 jetons de sortie et deux tentatives de correction en cas de JSON invalide.
+Si la troisième réponse reste invalide ou si le serveur ne répond pas,
+l’exécution est arrêtée et déclarée incomplète : aucune décision mathématique
+cachée ne remplace le LLM. Le modèle exact, le fournisseur, la révision, les
+paramètres et chaque réponse brute sont enregistrés. La température nulle ne
+suffit pas à garantir la reproductibilité ; le mode \emph{replay} réutilise les
+réponses enregistrées pour reproduire exactement une exécution.
+
+\subsubsection{Modèle mathématique témoin}
+
+La fonction logistique ne choisit plus l’action du modèle principal. Elle est
+conservée comme témoin afin d’évaluer ce que change la décision par LLM. Le
+score témoin est :
+\[
+\begin{aligned}
+Z_i^{(0)}(t)=\;&\beta_0+\beta_PP_i+\beta_Kc(K_i)
++\beta_I I_i c[SI_i(t)]\\
+&+\beta_RR_i(t)+\beta_SSR_i(t)
++\beta_Mc[M_i(t)]+\varepsilon_i(t),
+\end{aligned}
+\]
+avec
+\[
+P_i^{(0)}(t)=\frac{1}{1+e^{-Z_i^{(0)}(t)}},\qquad
+B_i^{(0)}(t)=\mathbf 1\!\left[u_i(t)<P_i^{(0)}(t)\right].
+\]
+Cette transformation logistique correspond à un choix discret probabiliste
+\cite{mcfadden1974}. Les coefficients de référence restent
+\[
+(\beta_0,\beta_P,\beta_K,\beta_I,\beta_R,\beta_S,\beta_M)
+=(0;0{,}5;1;1;0{,}7;1;0{,}6),
+\]
+avec $\varepsilon_i(t)\sim\mathcal U[-0{,}2;0{,}2]$ et
+$u_i(t)\sim\mathcal U(0,1)$. Nous exécutons ce témoin séparément avec les mêmes
+agents, réseaux et graines. Nous calculons aussi, à état identique, son accord
+ponctuel avec la décision du LLM. Le témoin ne modifie jamais l’environnement
+de l’exécution LLM.
+
+\subsection{Dictionnaire des variables}
+
+Le tableau~\ref{tab:variables} rassemble la notation utilisée dans les
+équations. Une variable dite \emph{fixe} ne change pas pendant une exécution ;
+une variable \emph{dynamique} est recalculée à chaque période ; une
+\emph{sortie} sert uniquement à l’analyse des résultats.
+
+\footnotesize
+\renewcommand{\arraystretch}{1.03}
+\begin{longtable}{@{}L{27mm}L{48mm}L{38mm}L{44mm}@{}}
+\caption{Dictionnaire opérationnel des variables}
+\label{tab:variables}\\
+\toprule
+\rowcolor{Navy}
+\color{white}\textbf{Symbole} &
+\color{white}\textbf{Signification} &
+\color{white}\textbf{Domaine / départ} &
+\color{white}\textbf{Évolution ou statut}\\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{Navy}
+\color{white}\textbf{Symbole} &
+\color{white}\textbf{Signification} &
+\color{white}\textbf{Domaine / départ} &
+\color{white}\textbf{Évolution ou statut}\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+$i,t,g$ &
+Agent, période et service &
+$i=1,\ldots,N$ ; $t=0,\ldots,T$ &
+Indices de calcul.\\
+$N,N_E,N_H,G,T$ &
+Population, employés, chefs, services et durée &
+$100,90,10,10,200$ &
+Paramètres fixes du scénario.\\
+$r_i,g_i$ &
+Rôle et service de l’agent $i$ &
+Chef/employé ; $g_i\in\{1,\ldots,G\}$ &
+Fixes pendant l’exécution.\\
+$\mathcal N_i,h(i)$ &
+Voisins pairs et chef de l’employé $i$ &
+Réseau initial ; $h(i)$ absent pour un chef &
+Fixes dans la configuration de référence.\\
+$O_i,C_i,E_i,A_i,N_i$ &
+Traits Big Five &
+$[0,1]$ ; $\operatorname{Beta}(2,2)$ &
+Caractéristiques individuelles fixes.\\
+$I_i,K_i,S_i$ &
+Influençabilité, adhésion intrinsèque et sensibilité aux sanctions &
+$[0,1]$ ; $\operatorname{Beta}(2,2)$ &
+Dispositions individuelles fixes.\\
+$P_i$ &
+Score synthétique de personnalité &
+$[-1,1]$ ; calculé à l’initialisation &
+Fixe ; utilisé notamment par le témoin mathématique.\\
+$B_i(t)$ &
+Comportement de l’agent &
+$\{0,1\}$ ; 1 = conforme &
+Dynamique ; action choisie par le LLM.\\
+$M_i(t)$ &
+Mémoire du comportement passé &
+$[0,1]$ ; $M_i(0)=0{,}5$ &
+Dynamique ; moyenne exponentielle.\\
+$PS_i(t)$ &
+Conformité observée parmi les pairs &
+$[0,1]$ &
+Moyenne des comportements des voisins à $t-1$.\\
+$SI_i(t)$ &
+Part pondérée de conformité observée &
+$[0,1]$ &
+Pairs et chef ; utilisée par le témoin mathématique.\\
+$B_{h(i)}(t-1),\rho_{ih}(t)$ &
+Comportement récent et réputation du chef &
+$\{0,1\}$ et $[0,1]$ ; $\rho_{ih}(0)=0{,}5$ &
+Observés par l’employé, sans étiquette morale.\\
+$R_i(t)$ &
+Présence perçue de la règle &
+$\{0,1\}$ &
+0 en phase 1 ; 1 en phases 2 et 3.\\
+$\Omega_i(t)$ &
+Observation structurée transmise au LLM &
+Variables locales autorisées &
+Construite avant chaque décision.\\
+$\eta_i(t),\mathcal I_i(t)$ &
+Partenaire assigné et message reçu &
+Agent local ou ensemble vide &
+Une dyade à la fois ; réception décalée d’une période.\\
+$m_{i\rightarrow j}(t),s_{i\rightarrow j}(t)$ &
+Message direct et posture &
+Texte ; quatre postures &
+Sorties LLM lorsqu’une dyade est active.\\
+$X_{ij}(t),CF_{ij}(t)$ &
+Événement et intensité du conflit &
+$\{0,1\}$ et $[0,1]$ ; $CF_{ij}(0)=0$ &
+Calculés après les actions et les messages.\\
+$\mathcal H_i^{\mathrm{LLM}}(t)$ &
+Mémoire narrative privée de l’agent &
+Au plus 10 enregistrements en référence &
+Observation, action, justification et conséquence visible.\\
+$m_{\mathrm{LLM}}$ &
+Capacité de la mémoire narrative &
+10 enregistrements en référence &
+Paramètre de sensibilité, sans mémoire partagée.\\
+$J_i(t),F_i(t),\kappa_i(t)$ &
+Justification, facteurs déclarés et confiance &
+Texte, liste et valeur dans $[0,1]$ &
+Sorties du LLM à chaque décision.\\
+$\Theta$ &
+Configuration du serveur LLM &
+Modèle, révision, prompt et inférence &
+Fixe pendant une exécution et entièrement journalisée.\\
+$Q_i(t),Y_i(t),D_i(t)$ &
+Violation, tirage de contrôle et détection &
+$\{0,1\}$ &
+$Q_i=1-B_i$ ; $Y_i\sim\mathrm{Bernoulli}(p_d)$ ;
+$D_i=Q_iY_i$.\\
+$V_i(t)$ &
+Nombre cumulé de violations détectées &
+$\{0,1,\ldots\}$ ; $V_i(0)=0$ &
+Augmente de $D_i(t)$.\\
+$L_i(t)$ &
+Sanction réellement appliquée &
+$\{0;0{,}25;0{,}50;1\}$ &
+Non nulle seulement si $D_i(t)=1$.\\
+$X_i^{\mathrm{pers}},X_i^{\mathrm{obs}}$ &
+Signaux personnel et social de détection &
+$[0,1]$ &
+Calculés à partir des événements de $t-1$.\\
+$\widehat p_i(t)$ &
+Probabilité de détection estimée &
+$[0,1]$ ; 0 ou $0{,}5$ au départ &
+Dynamique ; expérience, observation et croyance passée.\\
+$\widehat L_i(t),SR_i(t)$ &
+Sanction suivante anticipée et risque ressenti &
+$\widehat L_i\in\{0{,}25;0{,}50;1\}$ ;
+$SR_i\in[0,1]$ &
+$SR_i=S_i\widehat p_i\widehat L_i$.\\
+$Z_i^{(0)}(t),P_i^{(0)}(t),B_i^{(0)}(t)$ &
+Score, probabilité et action du témoin &
+$\mathbb R$, $[0,1]$ et $\{0,1\}$ &
+Calculés séparément ; aucun effet sur l’exécution LLM.\\
+$\varepsilon_i(t),u_i(t)$ &
+Bruit et tirage du témoin mathématique &
+$[-0{,}2;0{,}2]$ et $[0,1]$ &
+Nouveaux tirages à chaque période du témoin.\\
+{\scriptsize $TC(t),TC_g(t),TC_{g,E}(t)$} &
+Conformité globale, du service et de ses employés &
+$[0,1]$ &
+Sorties calculées après les décisions.\\
+$G_g(t)$ &
+Indicateur de majorité conforme du service &
+$\{0,1\}$ &
+Vaut 1 si $TC_{g,E}(t)\geq0{,}5$.\\
+$k_i^E,k_i^H,p_{\mathrm{intra}}$ &
+Degrés employés/chefs et probabilité de lien interne &
+Entiers ; $p_{\mathrm{intra}}\in[0,1]$ &
+Paramètres de construction du réseau.\\
+$w_c,w_h,p_d,\lambda,\lambda_\rho,\lambda_{CF}$ &
+Poids, détection et persistances &
+$w_c,w_h>0$ ; autres valeurs dans $[0,1]$ &
+Paramètres expérimentaux.\\
+$\alpha_q,\beta_q,\ell_1,\ell_2,\ell_3$ &
+Poids de personnalité, coefficients du témoin et sanctions &
+$\alpha=(0,1,0,1,-1)$ ; autres valeurs au
+tableau~\ref{tab:params} &
+Paramètres expérimentaux à calibrer.\\
+$\Delta_R,\Delta_{MS},\Delta_{\mathrm{LLM}},A_{\mathrm{LLM}}$ &
+Effets moyens et accord avec le témoin &
+$\Delta\in[-1,1]$ ; $A_{\mathrm{LLM}}\in[0,1]$ &
+Sorties appariées sur les réplications.\\
+\end{longtable}
+\normalsize
+\renewcommand{\arraystretch}{1.12}
+
+\section{Plan expérimental et sorties}
+
+\subsection{Configuration de référence}
+
+\small
+\renewcommand{\arraystretch}{1.02}
+\begin{longtable}{@{}L{62mm}C{28mm}C{32mm}C{28mm}@{}}
+\caption{Paramètres principaux et sensibilité}
+\label{tab:params}\\
+\toprule
+\rowcolor{Navy}
+\color{white}\textbf{Paramètre} &
+\color{white}\textbf{Bas} &
+\color{white}\textbf{Référence} &
+\color{white}\textbf{Haut}\\
+\midrule
+\endfirsthead
+\toprule
+\rowcolor{Navy}
+\color{white}\textbf{Paramètre} &
+\color{white}\textbf{Bas} &
+\color{white}\textbf{Référence} &
+\color{white}\textbf{Haut}\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Population $N$ & 50 & 100 & 500\\
+Part des chefs & 5\,\% & 10\,\% & 20\,\%\\
+Relations employés $k^E$ & 2 & 4--8 & 12\\
+Relations chefs $k^H$ & 2 & 4--8 & 8\\
+Liens internes $p_{\mathrm{intra}}$ & 0,60 & 0,80 & 1,00\\
+Poids collègue $w_c$ & 0,5 & 1,0 & 1,5\\
+Poids chef $w_h$ & 1 & 2 & 3\\
+Durée $T$ & 100 & 200 & 1\,000\\
+Mémoire narrative LLM $m_{\mathrm{LLM}}$ & 5 & 10 & 20\\
+Jetons de sortie LLM & 160 & 240 & 320\\
+Durée d’une dyade & 1 & 2 & 4\\
+Persistance $\lambda$ & 0,2 & 0,8 & 0,95\\
+Persistance de réputation $\lambda_\rho$ & 0,2 & 0,8 & 0,95\\
+Persistance du conflit $\lambda_{CF}$ & 0,2 & 0,6 & 0,9\\
+Détection $p_d$ & 0,1 & 0,5 & 0,9\\
+Témoin : poids personnalité $\beta_P$ & 0,2 & 0,5 & 1,0\\
+Témoin : poids adhésion $\beta_K$ & 0,5 & 1,0 & 1,5\\
+Témoin : poids règle $\beta_R$ & 0,2 & 0,7 & 1,5\\
+Témoin : poids social $\beta_I$ & 0,5 & 1,0 & 2,0\\
+Témoin : poids sanction $\beta_S$ & 0,5 & 1,0 & 2,0\\
+Témoin : poids mémoire $\beta_M$ & 0,2 & 0,6 & 1,5\\
+Première sanction $\ell_1$ & 0,10 & 0,25 & 0,40\\
+Deuxième sanction $\ell_2$ & 0,30 & 0,50 & 0,70\\
+Sanction forte $\ell_3$ & 0,60 & 1,00 & 1,00\\
+\end{longtable}
+\normalsize
+\renewcommand{\arraystretch}{1.12}
+
+Nous examinons d’abord chaque paramètre séparément, puis nous faisons varier
+conjointement ceux dont les effets peuvent interagir, notamment l’autorité,
+l’influençabilité, la détection, les sanctions et la mémoire.
+
+Le fournisseur, le modèle, sa révision, le prompt système et les paramètres
+d’inférence restent identiques dans les trois phases d’une réplication. Ils ne
+peuvent pas être modifiés pendant une exécution. Une étude de robustesse
+distincte compare ensuite au moins deux modèles de langage et deux formulations
+du prompt, sans mélanger ces résultats avec ceux de la configuration de
+référence.
+
+Chaque phase est exécutée avec les mêmes 30 graines :
+\[
+\mathcal S=\{42,43,\ldots,71\}.
+\]
+La population, les personnalités, le réseau et les chefs restent identiques
+entre les phases d’une même réplication. Pour la phase $s$ et la réplication
+$r$, la conformité moyenne sur les $T$ périodes est :
+\[
+\overline{TC}_{s,r}=\frac{1}{T}\sum_{t=1}^{T}TC_{s,r}(t).
+\]
+Les différences sont calculées à l’intérieur de chaque réplication, puis
+moyennées sur les $n_{\mathrm{rep}}=30$ réplications :
+\[
+\Delta_R=\frac{1}{n_{\mathrm{rep}}}\sum_{r=1}^{n_{\mathrm{rep}}}
+(\overline{TC}_{2,r}-\overline{TC}_{1,r}),\qquad
+\Delta_{MS}=\frac{1}{n_{\mathrm{rep}}}\sum_{r=1}^{n_{\mathrm{rep}}}
+(\overline{TC}_{3,r}-\overline{TC}_{2,r}).
+\]
+L’utilisation de graines communes améliore la comparaison des scénarios
+stochastiques \cite{schruben2011}.
+Ces différences décrivent les effets produits dans le modèle ; elles ne
+constituent pas, à elles seules, des estimations causales pour une organisation
+réelle.
+
+Le témoin mathématique est exécuté séparément pour les trois phases, avec les
+mêmes agents, réseaux et graines. En notant
+$\overline{TC}^{(0)}_{s,r}$ sa conformité moyenne, l’écart moyen entre
+mécanismes de décision est :
+\[
+\Delta_{\mathrm{LLM}}=
+\frac{1}{3n_{\mathrm{rep}}}
+\sum_{s=1}^{3}\sum_{r=1}^{n_{\mathrm{rep}}}
+\left(\overline{TC}_{s,r}-\overline{TC}^{(0)}_{s,r}\right).
+\]
+Pendant une exécution LLM, le témoin peut aussi produire une décision
+\emph{fantôme} à partir du même état local, sans modifier l’environnement. Son
+accord ponctuel avec l’action appliquée est :
+\[
+A_{\mathrm{LLM}}=
+\frac{1}{3n_{\mathrm{rep}}NT}
+\sum_{s=1}^{3}\sum_{r=1}^{n_{\mathrm{rep}}}
+\sum_{t=1}^{T}\sum_{i=1}^{N}
+\mathbf 1\!\left[B_{i,s,r}(t)=B_{i,s,r}^{(0)}(t)\right].
+\]
+Ces deux mesures distinguent un écart de trajectoire collective d’un désaccord
+local sur une même situation.
+
+Le plan complet de référence représente
+$100\times200\times3\times30=1\,800\,000$ décisions LLM, hors
+initialisation et nouvelles tentatives. Avant de le lancer, un pilote
+$N=20$, $T=50$, trois phases et trois graines vérifie le schéma JSON, le taux
+d’erreur, la livraison différée des messages, le calcul des conflits, la durée,
+le nombre de jetons et le coût. Les interactions sont produites dans le même
+appel que l’action et n’augmentent donc pas le nombre théorique d’appels, mais
+elles augmentent la taille des réponses. Le plan complet n’est lancé qu’après
+validation de ce pilote et fixation du budget de calcul.
+
+Pour les comparaisons hiérarchiques, le groupe d’employés du service $g$ est
+dit conforme lorsqu’une majorité de ses membres est conforme. Ici,
+$TC_{g,E}(t)$ désigne la proportion d’employés conformes dans ce service :
+\[
+G_g(t)=\mathbf 1\!\left[TC_{g,E}(t)\geq0{,}5\right].
+\]
+Nous suivons alors séparément les quatre contextes : chef conforme et groupe
+conforme ; chef conforme et groupe non conforme ; chef non conforme et groupe
+conforme ; chef non conforme et groupe non conforme.
+
+\subsection{Indicateurs}
+
+L’indicateur central est :
+\[
+TC(t)=\frac{1}{N}\sum_{i=1}^{N}B_i(t).
+\]
+La somme compte les agents conformes à la période $t$ et la division par $N$
+la transforme en proportion. Ainsi, $TC(t)=0$ signifie qu’aucun agent n’est
+conforme et $TC(t)=1$ que tous les agents le sont. Cet indicateur agrège les
+décisions individuelles sans imposer le résultat collectif, conformément au
+passage micro--macro décrit par Schelling \cite{schelling2006}.
+
+Nous enregistrons aussi :
+
+\begin{itemize}
+  \item le taux de conformité moyen et le taux par service ;
+  \item la variance de conformité entre services ;
+  \item le nombre de changements conforme/non conforme ;
+  \item la part d’agents qui résistent à une majorité locale opposée ;
+  \item la différence de conformité selon le comportement courant du chef ;
+  \item les trajectoires des services dont le chef est initialement conforme
+  ou non conforme ;
+  \item l’évolution de la réputation $\rho_{ih}(t)$ et son association avec les
+  décisions des employés ;
+  \item le temps de convergence ;
+  \item la coexistence de services fortement conformes et non conformes ;
+  \item le nombre de messages par posture et par relation
+  pair--pair, chef--employé ou chef--chef ;
+  \item la fréquence, l’intensité et la durée des conflits, ainsi que leur
+  association avec les changements de comportement ;
+  \item les violations détectées et les sanctions appliquées ;
+  \item la fréquence des facteurs déclarés dans les justifications et leur
+  évolution selon la phase ;
+  \item la distribution de la confiance $\kappa_i(t)$ et son association avec
+  les changements d’action ;
+  \item l’accord $A_{\mathrm{LLM}}$ et l’écart
+  $\Delta_{\mathrm{LLM}}$ avec le témoin mathématique ;
+  \item les réponses invalides, nouvelles tentatives, interruptions et rejets ;
+  \item le nombre d’appels, les jetons, la latence et, le cas échéant, le coût.
+\end{itemize}
+
+Les résultats sont présentés par trajectoires, moyennes, écarts-types,
+intervalles de confiance et différences appariées. Les sorties ne sont pas
+réduites à la dernière période. Les justifications sont analysées comme des
+données déclarées par le modèle de langage, et non comme une preuve directe de
+son mécanisme interne.
+
+\section{Vérification, validation et limites}
+
+\subsection{Vérification}
+
+Les tests minimaux sont :
+
+\begin{itemize}
+  \item $p_d=0$ ne produit aucune sanction ;
+  \item \code{rules\_enabled=false} impose $R_i(t)=0$ ;
+  \item $D_i(t)\leq Q_i(t)$ et $V_i(t)$ ne peut pas diminuer ;
+  \item $I_i=0$ annule l’influence sociale de l’agent ;
+  \item dans le témoin, $\beta_R=\beta_S=0$ annule l’effet direct de la règle
+  et du risque de sanction ;
+  \item $w_h=w_c$ supprime l’avantage de poids du chef ;
+  \item $\lambda=0$ conserve seulement le dernier comportement et
+  $\lambda=1$ fige la mémoire ;
+  \item tous les taux et toutes les probabilités restent dans $[0,1]$ ;
+  \item l’état initial est identique dans les trois phases d’une réplication ;
+  \item cinq chefs ont $B_i(0)=1$ et cinq ont $B_i(0)=0$ dans chaque
+  réplication ;
+  \item chaque action appliquée possède un JSON valide, une justification non
+  vide et une confiance dans $[0,1]$ ;
+  \item le prompt ne contient ni indicateur global, ni information future, ni
+  comportement extérieur au voisinage autorisé ;
+  \item le prompt d’un employé contient séparément $PS_i(t)$,
+  $B_{h(i)}(t-1)$ et $\rho_{ih}(t)$, sans étiquette éthique/non éthique ;
+  \item $\rho_{ih}(t)$ reste dans $[0,1]$ et dépend uniquement des
+  comportements antérieurs observés du chef ;
+  \item chaque agent appartient à une seule dyade et chaque partenaire est
+  relié par un lien autorisé ;
+  \item un message produit à $t$ n’est visible par sa cible qu’à $t+1$ ;
+  \item avec partenaire, la cible JSON est celle assignée et le type
+  \code{aucune} est refusé ; sans partenaire, aucun message n’est produit ;
+  \item $X_{ij}(t)=1$ exige à la fois des comportements différents et au moins
+  une posture d’opposition ou d’avertissement ;
+  \item $CF_{ij}(t)$ reste dans $[0,1]$ et ne modifie jamais directement
+  $B_i(t)$ ou $B_j(t)$ ;
+  \item l’historique d’un agent n’apparaît jamais dans celui d’un autre ;
+  \item après trois réponses invalides ou une panne du serveur, l’exécution est
+  marquée incomplète et aucune action de remplacement n’est produite ;
+  \item le calcul fantôme du témoin ne modifie aucun état de l’exécution LLM ;
+  \item le mode \emph{replay} reproduit exactement les actions et les sorties
+  enregistrées.
+\end{itemize}
+
+\subsection{Validation et limites}
+
+Sans données organisationnelles, la validation porte sur la cohérence des
+mécanismes, les cas limites, les invariants, la sensibilité des paramètres et
+l’inspection des trajectoires. Une validation empirique devra ensuite comparer
+la personnalité, le réseau, la conformité initiale, les violations, la
+détection et les réactions aux sanctions.
+
+Les principales limites sont :
+
+\begin{itemize}
+  \item les distributions et coefficients ne sont pas encore calibrés, le
+  comportement reste binaire et les résultats ne sont pas des estimations
+  causales ;
+  \item la hiérarchie ne comporte que deux niveaux et le réseau reste fixe
+  pendant une exécution ;
+  \item la règle est connue de tous dans les phases 2 et 3, tandis que les
+  sanctions n’ont ni coût organisationnel ni effet de contournement explicite ;
+  \item les profils émergents ne sont pas des types psychologiques sans
+  validation indépendante ;
+  \item les résultats dépendent du fournisseur, du modèle, de sa révision, du
+  prompt et des paramètres d’inférence ; une température nulle ne garantit pas
+  des réponses identiques et la réplication exacte exige le mode
+  \emph{replay} ;
+  \item les justifications peuvent être incomplètes, rationalisées après
+  l’action ou influencées par le prompt, et la mémoire limitée peut supprimer
+  un événement ancien encore pertinent ;
+  \item le modèle de langage peut reproduire des biais présents dans ses
+  données ou dans les exemples du prompt ;
+  \item les dyades limitées à un partenaire et deux périodes simplifient les
+  conversations collectives, tandis que la définition du conflit reste une
+  opérationnalisation à valider empiriquement ;
+  \item le plan complet demande environ 1,8 million de décisions LLM, avec un
+  coût et une durée qui dépendent fortement du serveur choisi.
+\end{itemize}
+
+\medskip
+\noindent\textbf{\color{Navy}Principe à conserver —}
+Les perceptions, les contraintes et les conséquences sont programmées ; chaque
+action et chaque message sont choisis et justifiés par le LLM de l’agent. Les
+conflits et le résultat collectif sont calculés après les interactions et ne
+doivent pas être imposés dans le code.
+
+\clearpage
+\begin{thebibliography}{99}
+\addcontentsline{toc}{section}{Références}
+\footnotesize
+\setlength{\itemsep}{0.25em}
+\setlength{\parsep}{0pt}
+
+\bibitem{grimm2020}
+V. Grimm \emph{et al.}, ``The ODD protocol for describing agent-based and other
+simulation models: A second update to improve clarity, replication, and
+structural realism,'' \emph{Journal of Artificial Societies and Social
+Simulation}, vol. 23, no. 2, art. no. 7, 2020,
+doi: \href{https://doi.org/10.18564/jasss.4259}{10.18564/jasss.4259}.
+
+\bibitem{epstein1996}
+J. M. Epstein and R. L. Axtell, \emph{Growing Artificial Societies: Social
+Science from the Bottom Up}. Washington, DC, USA: Brookings Institution Press;
+Cambridge, MA, USA: MIT Press, 1996.
+
+\bibitem{costa1992}
+P. T. Costa, Jr. and R. R. McCrae, \emph{Revised NEO Personality Inventory
+(NEO PI-R) and NEO Five-Factor Inventory (NEO-FFI): Professional Manual}.
+Odessa, FL, USA: Psychological Assessment Resources, 1992.
+
+\bibitem{bandura1977}
+A. Bandura, \emph{Social Learning Theory}. Englewood Cliffs, NJ, USA:
+Prentice-Hall, 1977.
+
+\bibitem{cialdini2009}
+R. B. Cialdini, \emph{Influence: Science and Practice}, 5th ed. Boston, MA,
+USA: Pearson, 2009.
+
+\bibitem{deutsch1973}
+M. Deutsch, \emph{The Resolution of Conflict: Constructive and Destructive
+Processes}. New Haven, CT, USA: Yale University Press, 1973.
+
+\bibitem{simon1997}
+H. A. Simon, \emph{Administrative Behavior: A Study of Decision-Making
+Processes in Administrative Organizations}, 4th ed. New York, NY, USA:
+Free Press, 1997.
+
+\bibitem{ostrom1990}
+E. Ostrom, \emph{Governing the Commons: The Evolution of Institutions for
+Collective Action}. Cambridge, U.K.: Cambridge University Press, 1990,
+doi: \href{https://doi.org/10.1017/CBO9780511807763}
+{10.1017/CBO9780511807763}.
+
+\bibitem{axelrod2006}
+R. Axelrod, \emph{The Evolution of Cooperation}, rev. ed. New York, NY, USA:
+Basic Books, 2006.
+
+\bibitem{schelling2006}
+T. C. Schelling, \emph{Micromotives and Macrobehavior}, rev. ed. New York,
+NY, USA: W. W. Norton \& Company, 2006.
+
+\bibitem{mesa2025}
+E. ter Hoeven \emph{et al.}, ``Mesa 3: Agent-based modeling with Python in
+2025,'' \emph{Journal of Open Source Software}, vol. 10, no. 107, art. no.
+7668, 2025, doi:
+\href{https://doi.org/10.21105/joss.07668}{10.21105/joss.07668}.
+
+\bibitem{mesallm2026}
+Project Mesa Team, ``Mesa-LLM: Generative agent-based modeling with large
+language models empowered agents,'' ver. 0.3.2, 2026. [Online]. Available:
+\url{https://mesa-llm.readthedocs.io/en/latest/}. Accessed: Jul. 27, 2026.
+
+\bibitem{mcfadden1974}
+D. McFadden, ``Conditional logit analysis of qualitative choice behavior,''
+in \emph{Frontiers in Econometrics}, P. Zarembka, Ed. New York, NY, USA:
+Academic Press, 1974, pp. 105--142. [Online]. Available:
+\url{https://escholarship.org/uc/item/0p99072q}.
+
+\bibitem{schruben2011}
+L. W. Schruben, ``Common random numbers,'' in \emph{Wiley Encyclopedia of
+Operations Research and Management Science}, J. J. Cochran, Ed. Hoboken, NJ,
+USA: Wiley, 2011, doi:
+\href{https://doi.org/10.1002/9780470400531.eorms0166}
+{10.1002/9780470400531.eorms0166}.
+
+\end{thebibliography}
+
+\end{document}
